@@ -1,0 +1,2 @@
+cd C:\Documents and Settings\ccsrak\My Documents\testjjtree
+c:\javacc-4.1\bin\javacc -LOOKAHEAD:1000 -debug_parser -force_la_check:true -output_directory:.\com\ingenta\search\parse com\ingenta\search\parse\SearchExpressionParser.jj

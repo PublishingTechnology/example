@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <groupId>com.pub2web.product</groupId>
+    <artifactId>module-search-ingenta</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <parent>
+        <artifactId>search</artifactId>
+        <groupId>com.pub2web.product</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <properties>
+        <main.basedir>${basedir}/..</main.basedir>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-digester</groupId>
+            <artifactId>commons-digester</artifactId>
+        </dependency>
+
+        <!-- Core Pub2WEB dependencies -->
+
+        <dependency>
+            <groupId>application-utils</groupId>
+            <artifactId>application-utils</artifactId>
+            <version>4.0.1</version>
+            <scope>system</scope>
+            <systemPath>${main.basedir}/lib/application-utils-4.0.1.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>facet</groupId>
+            <artifactId>facet</artifactId>
+            <version>4.0.2</version>
+            <scope>system</scope>
+            <systemPath>${main.basedir}/lib/facet-4.0.2.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>framework</groupId>
+            <artifactId>framework</artifactId>
+            <version>1.0.14</version>
+            <scope>system</scope>
+            <systemPath>${main.basedir}/lib/framework-1.0.14.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>accesscontrol-api</groupId>
+            <artifactId>accesscontrol-api</artifactId>
+            <version>4.0.3</version>
+            <scope>system</scope>
+            <systemPath>${main.basedir}/lib/accesscontrol-api-4.0.3.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>accesscontrol-web</groupId>
+            <artifactId>accesscontrol-web</artifactId>
+            <version>4.0.3</version>
+            <scope>system</scope>
+            <systemPath>${main.basedir}/lib/accesscontrol-web-4.0.3.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>util</groupId>
+            <artifactId>util</artifactId>
+            <version>1.3.3</version>
+            <scope>system</scope>
+            <systemPath>${main.basedir}/lib/util-1.3.3.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>acs-api</groupId>
+            <artifactId>acs-api</artifactId>
+            <version>4.0.0</version>
+            <scope>system</scope>
+            <systemPath>${main.basedir}/lib/acs-api-4.0.0.jar</systemPath>
+        </dependency>
+        <!-- end Pub2WEB -->
+        <dependency>
+            <groupId>com.pub2web.product</groupId>
+            <artifactId>module-search-types</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.pub2web.product</groupId>
+            <artifactId>module-search-ejb-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+    </dependencies>
+
+</project>

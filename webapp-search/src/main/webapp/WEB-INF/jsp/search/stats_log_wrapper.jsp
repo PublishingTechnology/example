@@ -1,0 +1,24 @@
+<%@ include file="/WEB-INF/jspf/taglibs.jspf" %><%--
+--%><c:set var="newSearchTerm"><c:if test="${not empty param.searchterm}"><![CDATA[${param.searchterm}]]></c:if></c:set><%--
+--%><c:choose><%--
+	--%><c:when test="${not empty param.id }"><%--
+		--%><c:choose><%--
+		    --%><c:when test="${not empty param.mime}"><%--
+		         --%><stats:log eventType="DELIVERY" item="${fn:substringAfter(param.id,'/')}" mimeType="${param.mime}"/><%--
+		    --%></c:when><%--
+		    --%><c:when test="${not empty param.publisherids or not empty param.publicationids}"><%--
+		          --%><stats:log eventType="SEARCH_NEW_SEARCH" item="${param.id}" searchTerm="${newSearchTerm}" publisherIds="${param.publisherids}" titleIds = "${param.publicationids}"/><%--
+		    --%></c:when><%--
+		    --%><c:otherwise><%--
+		          --%><stats:log eventType="SEARCH_NEW_SEARCH" item="${param.id}" searchTerm="${newSearchTerm}" /><%--
+		     --%></c:otherwise><%--
+		--%></c:choose><%--
+	--%></c:when><%--
+    --%><c:when test="${not empty param.publisherids or not empty param.publicationids}"><%--
+          --%><stats:log eventType="SEARCH_NEW_SEARCH" searchTerm="${newSearchTerm}" publisherIds="${param.publisherids}" titleIds = "${param.publicationids}"/><%--
+    --%></c:when><%--
+    --%><c:otherwise><%--
+		--%><stats:log eventType="SEARCH_NEW_SEARCH"  searchTerm="${newSearchTerm}" /><%--
+    --%></c:otherwise><%--
+--%></c:choose><%--
+--%>${fn:escapeXml(statsLogContents)}

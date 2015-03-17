@@ -1,0 +1,412 @@
+<form method="get" action="<c:url value="/search"/>" accept-charset="UTF-8" enctype="text/plain;charset=UTF-8" id="advanced-search-form" class="validated">
+
+    <c:if test="${not empty fn:escapeXml(param.refined)}">
+        <input type="hidden" name="refined" value="true" />
+    </c:if>
+
+    <c:if test="${not empty fn:escapeXml(param.refineLevel)}">
+        <input type="hidden" name="refineLevel" value="${param.refineLevel}" />
+    </c:if>
+
+    <c:if test="${ not empty searchError}">
+        <div class="error">
+            <h2>Error: ${searchError}</h2>
+        </div>
+    </c:if>
+
+    <div class="termInputGroup">
+        <div class="termInput">
+            <div class="searchWithinInputLabel"><s:message key="searchfor" pageAgnostic="true" editable="true">Search for:</s:message></div> <input type="text" name="value1" id="value1" value='${fn:escapeXml(param.value1)}'/>
+
+            <select id="booleanselector">
+                <option value="searchoptionall"><s:message key="searchallwords" pageAgnostic="true" editable="false">All of these words</s:message></option>
+                <option value="searchoptionsome"><s:message key="searchsomewords" pageAgnostic="true" editable="false">Some of these words</s:message></option>
+                <option value="searchoptionexact"><s:message key="searchexact" pageAgnostic="true" editable="false">The exact phrase</s:message></option>
+            </select>
+        </div>
+        <div class="termInput">
+            <div class="searchWithinInputLabel">&nbsp;</div> <input type="checkbox" name="fulltextcheck" class="checkbox option1checkbox" value="option1checked" ${param.option1 == 'fulltext' ? 'checked=checked' : ''}/><s:message key="withinfulltext" pageAgnostic="true" editable="true">Within the fulltext?</s:message>
+            <input type="hidden" id="option1" name="option1" value="${param.option1 == 'fulltext' ? 'fulltext' : 'all'}" class="option1hidden" />
+        </div>
+        <div class="termInput longfield">
+            <input type="hidden" name="operator2"  id="operator2" value="AND" />
+            <div class="searchWithinInputLabel"><s:message key="withthistitle" pageAgnostic="true" editable="true">With this title:</s:message></div> <input type="text" name="value2" id="value2" value="<c:if test="${param.option2 == 'title'}">${fn:escapeXml(param.value2)}</c:if>"/>
+            <input type="hidden" id="option2" name="option2" value="title" />
+        </div>
+        <div class="termInput longfield">
+            <input type="hidden" name="operator3"  id="operator3" value="AND" />
+            <div class="searchWithinInputLabel"><s:message key="withthisauthor" pageAgnostic="true" editable="true">With this author:</s:message></div> <input type="text" name="value3" id="value3" value="<c:if test="${param.option3 == 'author'}">${fn:escapeXml(param.value3)}</c:if>"/>
+            <input type="hidden" id="option3" name="option3" value="author" />
+        </div>
+        <div class="termInput longfield">
+            <input type="hidden" name="operator4"  id="operator4" value="AND" />
+            <div class="searchWithinInputLabel"><s:message key="withissnisbnordoi" pageAgnostic="true" editable="true">With this ISSN / ISBN or DOI:</s:message></div><input type="text" name="value4" id="value4" value="<c:if test="${param.option4 == 'issnisbndoi'}">${fn:escapeXml(param.value4)}</c:if>"/>
+            <input type="hidden" id="option4" name="option4" value="issnisbndoi" />
+        </div>
+        <div class="termInput longfield">
+            <input type="hidden" name="operator5"  id="operator5" value="NOT" />
+            <div class="searchWithinInputLabel"><s:message key="butdontsearchfor" pageAgnostic="true" editable="true">But don't search for:</s:message></div> <input type="text" name="value5" id="value5" value='${fn:escapeXml(param.value5)}'/>
+            <input type="hidden" name="option5" value="all" />
+        </div>
+
+    </div>
+
+    <h2><s:message key="searchwithin" pageAgnostic="true" editable="true">Search within</s:message></h2>
+
+    <c:if test="${not empty skin.searchMultipleSelect}">
+        <search:searchFormMultipleSelectInstructions />
+    </c:if>
+
+    <c:if test="${page.showSubjectDropDown}">
+        <search:searchFormSubjectDropDown item="${itemtag}" />
+    </c:if>
+
+    <div class="clearer"></div>
+
+    <search:searchFormContentTypes />
+
+    <c:if test="${page.showPublicationDropDown or page.showPublisherDropDown}">
+        <facet:item lens="http://pub2web.metastore.ingenta.com/views/publications-publishers-view" item="${skin.metastoreprefix}/content/publishers"/>
+    </c:if>
+
+    <c:if test="${page.showPublicationDropDown}">
+        <search:searchFormPublicationDropDown item="${itemtag}" />
+    </c:if>
+
+    <c:if test="${page.showPublisherDropDown}">
+        <search:searchFormPublisherDropDown item="${itemtag}" />
+    </c:if>
+
+
+    <div class="clearer"></div>
+
+    <c:if test="${not empty param.searchWithin}">
+
+        <c:forEach var="p" items="${param}">
+            <c:if test="${p.value == 'acs_parents'}">
+                <c:set var="acs_parents_key">value${fn:substringAfter(p.key, 'option')}</c:set>
+            </c:if>
+        </c:forEach>
+
+        <input type="hidden" name="operator12" value="AND" />
+        <input type="hidden" name="option12" value="acs_parents" />
+        <input type="hidden" name="value12" value="${param[acs_parents_key]}" />
+        <input type="hidden" name="searchWithin" value="${param.searchWithin}" />
+    </c:if>
+
+    <h2><s:message key="searchbetweenthesedates" pageAgnostic="true" editable="true">Search between these dates:</s:message></h2>
+
+
+    <c:choose>
+    <c:when test="${page.showDateSelection}">
+        <div class="yearInput">
+
+            <div class="yearFromLabel"><s:message key="from" pageAgnostic="true" editable="true">From</s:message></div>
+            <input type="hidden" name="operator11" value="AND" />
+            <input type="hidden" name="option11" value="date_from" />
+            <input type="text" name="value11" size="15" value="${fn:escapeXml(param.value11)}" class="xdate" id="inputCalendarFrom"/>
+
+            <span class="connector"><s:message key="to" pageAgnostic="true" editable="true">to</s:message></span>
+            <input type="hidden" name="operator10" value="AND" />
+            <input type="hidden" name="option10" value="date_to" />
+            <input type="text" name="value10" value="${fn:escapeXml(param.value10)}" size="15" class="xdate" id="inputCalendarTo"/>
+        </div>
+    </c:when>
+    <c:otherwise>
+    <jsp:useBean id="now" class="java.util.Date"/>
+    <fmt:setLocale value="en" scope="request"/>
+    <fmt:formatDate value="${now}" pattern="yyyy" var="currentYear"/>
+    <c:set var="startYear" value="1836"/>
+    <c:set var="endYear" value="${currentYear}"/>
+
+    <div class="yearInput">
+        <input type="hidden" name="maxyear" value="${currentYear}" id="maxyear"/>
+        <div class="yearFromLabel"><s:message key="from" pageAgnostic="true" editable="true">From</s:message></div>
+        <input type="hidden" name="operator11" value="AND" />
+        <input type="hidden" name="option11" value="year_from" />
+        <select name="value11" id="yearFrom">
+            <option value="" selected="selected"><s:message key="searchallyears" pageAgnostic="true" editable="true">All Years</s:message></option>
+            <c:forEach var="year" begin="${startYear}" end="${endYear}">
+                <option ${(fn:escapeXml(param.value11) eq year || fn:escapeXml(yearFrom) eq year) ? 'selected="selected"' : ''}>${year}</option>
+            </c:forEach>
+        </select>
+        <span class="connector"><s:message key="to" pageAgnostic="true" editable="true">to</s:message></span>
+        <input type="hidden" name="operator10" value="AND" />
+        <input type="hidden" name="option10" value="year_to" />
+        <select name="value10" id="yearTo">
+            <c:forEach var="year" begin="${startYear}" end="${endYear}">
+                <option ${(((empty fn:escapeXml(param.value10)) && (empty yearTo) && (year eq endYear)) || fn:escapeXml(param.value10) eq year || fn:escapeXml(yearTo) eq year) ? 'selected="selected"' : ''}>${year}</option>
+            </c:forEach>
+        </select>
+    </div>
+    </c:otherwise>
+    </c:choose>
+
+    <h2 class="inline"><s:message key="sortresultsby" pageAgnostic="true" editable="true">Sort results by:</s:message></h2>
+
+    <div class="sortByInput inline">
+
+        <select name="sortField" >
+            <option id="sortRelevance" value="default" ${((empty fn:escapeXml(param.sortField)) ||  fn:escapeXml(param.sortField) == 'default') ? 'selected="selected"' : ''}><s:message key="searchsortrelevance" pageAgnostic="true" editable="true">Relevance</s:message></option>
+            <option id="sortNewest" value="prism_publicationDate" ${(fn:escapeXml(param.sortField) == 'prism_publicationDate' && param.sortDescending == 'true') ? 'selected="selected"' : ''}><s:message key="searchsortnewest" pageAgnostic="true" editable="true">Newest first</s:message></option>
+            <option id="sortOldest" value="prism_publicationDate" ${(fn:escapeXml(param.sortField) == 'prism_publicationDate' && param.sortDescending == 'false') ? 'selected="selected"' : ''}><s:message key="searchsortoldest" pageAgnostic="true" editable="true">Oldest first</s:message></option>
+        </select>
+        <input type="hidden" name="sortDescending" id="sortDescending" value="true" />
+
+    </div>
+
+    <div class="sortByInput advancedPageSize">
+     <s:message key="items_per_page" global="true">Display: {0} items per page
+        <s:param>
+           <select name="pageSize" id="pageSize">
+              <navigation:pageSizeOptions var="option">
+                 <option <c:if test="${option.selected}">selected="selected"</c:if> value="${option.option}">${option.option}</option>
+              </navigation:pageSizeOptions>
+           </select>
+        </s:param>
+     </s:message>
+    </div>
+
+    <div class="submitsearch"><jp:link to="#" class="btn-orange styledbutton" id="submitsearch"><span class="submitlabel"><s:message key="submitsearch" pageAgnostic="true" editable="true">Submit</s:message></span></jp:link></div>
+
+    <c:if test="${skin.showHiddenSearchFormParams}">
+        <search:hiddenFormParams />
+    </c:if>
+</form>
+
+<div class="hiddenblurbsvalues">
+    <div id="valid_date">Please enter a valid date (yyyy-MM-dd)</div>
+</div>
+
+<c:set var="statsLogging">${skin.showStatsLogging}</c:set>
+
+<script type="text/javascript" charset="utf-8">
+    /* <![CDATA[ */
+
+            $(document).ready(function() {
+                <c:choose>
+                    <c:when test="${not empty statsLogging}">
+                        var logging=${statsLogging};
+                    </c:when>
+                    <c:otherwise>
+                        var logging=false;
+                    </c:otherwise>
+                </c:choose>
+                var invalidsearch="${invalidsearch}";
+                if(logging){
+                    if(invalidsearch && invalidsearch!=""){
+                        $.post("<c:url value='/statslogredirect' />",{statsLogContents:"${fn:escapeXml(statsLogContents)}"});
+                    }
+                }
+
+                $(".option1checkbox").click(function() {
+                    if($('input.option1checkbox:checked').length > 0){
+                        $('.option1hidden').attr('value','fulltext');
+                    } else {
+                        $('.option1hidden').attr('value','all');
+                    }
+                    });
+
+                if($("#sortOldest").attr("checked")){
+                    $("#sortDescending").val('false');
+                }
+                $("#sortOldest").click(function() {
+                    $("#sortDescending").val('false');
+                });
+                $("#sortNewest").click(function() {
+                    $("#sortDescending").val('true');
+                });
+                $("#sortRelevance").click(function() {
+                    $("#sortDescending").val('true');
+                });
+
+                var poststatlog = function(){
+                    var hasIsbn=false;
+                    var issndata="";
+                    var i;
+                    var issnisbn="issnisbndoi";
+                    var term=$("#value1").val();
+                    var publisher=$("#publisher").val();
+                    var publication=$("#publication").val();
+
+                    var publisherIds ;
+                    var publicationIds;
+
+                    //Check if the user has select all pubishers or publications as 
+                    //this will do a global search and we should therefore not log event against 
+                    //publisher or publication restriction 
+                    if (publisher) {
+                        if ( publisher[0] != '') {
+                            var selected = $("#publisher:selected");
+                            var publisherStr ="";
+                            $("#publisher option:selected").each(function () {
+                            	publisherStr += $(this).attr("id") + ",";
+                                });
+                            publisherStr = publisherStr.slice(0,publisherStr.length-1);
+                        }
+                    	
+                    }
+                    if (publication) {
+	                    if ( publication[0] != '') {
+	                        var selected = $("#publication:selected");
+	                        var pubicationStr ="";
+	                        $("#publication option:selected").each(function () {
+	                        	pubicationStr += $(this).attr("id") + ",";
+	                            });
+	                        pubicationStr = pubicationStr.slice(0,pubicationStr.length-1);
+	                    }
+                    }	                
+
+
+                    for(i=1;i<5;i++){
+                        if($("#option"+i).val()== issnisbn && $.trim($("#value"+i).val())){
+                           var issnisbnval=$("#value"+i).val().replace(/-/g,'');
+                           var re = /^((?:[0-9]{8})|(?:[0-9]{10})|(?:[0-9]{13}))$/;
+                           if (re.test(issnisbnval)){
+                               hasIsbn=true;
+                               issndata=issnisbnval;
+                               break;
+                           }
+                       }
+                     }
+                    $.get("<c:url value='/statslogwrapper' />",{id:issndata,searchterm:term,publisherids:publisherStr,publicationids:pubicationStr},function(contents){
+                        $.post("<c:url value='/statslogredirect' />",{statsLogContents:contents},function(){
+                           $("#advanced-search-form").submit();
+                        })
+                    });
+                    return false;
+                }
+
+                var addbooleanoperator = function(operator){
+                    if ($("#value1").val() != '') {
+                        var newsearchterms = '';
+                        if (operator == 'PHRASE') {
+                            if ((($("#value1").val().substring(0, 1) != '\'')&& ($("#value1").val().substring(($("#value1").val().length - 1), $("#value1").val().length) != '\'')) && (($("#value1").val().substring(0, 1) != '\"') && ($("#value1").val().substring(($("#value1").val().length - 1), $("#value1").val().length) != '\"'))) {
+                                   newsearchterms = "'" + $("#value1").val() + "'";
+                                   $("#value1").val(newsearchterms);
+                               }
+                        } else {
+                            if ((($("#value1").val().substring(0, 1) != '\'')&& ($("#value1").val().substring(($("#value1").val().length - 1), $("#value1").val().length) != '\'')) && (($("#value1").val().substring(0, 1) != '\"') && ($("#value1").val().substring(($("#value1").val().length - 1), $("#value1").val().length) != '\"'))) {
+
+                                var searchterms = $.trim($("#value1").val()).split(/[\s]+/);
+
+                                var opaddedlast = false;
+                                for (var i=0; i<searchterms.length; i++){
+                                    if ((newsearchterms != "") && (!opaddedlast)) {
+                                        newsearchterms = newsearchterms + " " + operator + " ";
+                                        opaddedlast = true;
+                                    }
+                                    if (notOperator(searchterms[i])) {
+                                        newsearchterms = newsearchterms + searchterms[i];
+                                        opaddedlast = false;
+                                    }
+                                }
+                                $("#value1").val(newsearchterms);
+                            }
+                        }
+                     }
+                }
+
+                var notOperator = function(term){
+                    if ((term == 'AND') || (term == 'and') || (term == 'OR') || (term == 'or') || (term == 'NOT') || (term == 'not'))
+                        return false;
+                    else
+                        return true;
+                }
+
+
+                $("#submitsearch").click(function(){
+                    if($("#booleanselector").val() == 'searchoptionall')
+                        addbooleanoperator("AND");
+                    else if ($("#booleanselector").val() == 'searchoptionsome')
+                        addbooleanoperator("OR");
+                    else if ($("#booleanselector").val() == 'searchoptionexact')
+                        addbooleanoperator("PHRASE");
+                });
+
+                 $("#submitsearch").one("click", function(){
+                    if(logging){
+                        poststatlog();
+                    }else{
+                        $("#advanced-search-form").submit();
+                    }
+                    return false;
+                });
+
+                function addOption(selectbox,text,value )
+                {
+                    var optn = document.createElement("OPTION");
+                    optn.text = text;
+                    optn.value = value;
+                    selectbox.options.add(optn);
+                }
+
+                var adjustYears = function( limit){
+                    var i;
+                    var yearToselectbox = document.getElementById('yearTo');
+                    if (yearToselectbox != null) {
+                            var len=yearToselectbox.options.length;
+                            for(i=0;i<yearToselectbox.options.length;i++) {
+                               var year=yearToselectbox[i].text;
+                               if(year != limit){
+                                  yearToselectbox.options[i]=null;
+                                  i--;len--;
+                                  yearToselectbox.options.length=len;
+                               } else{
+                                  break;
+                               }
+                            }
+                    }
+                  return true;
+                }
+
+                var defaultYearFrom= $("#yearFrom").val();
+                adjustYears(defaultYearFrom);
+
+                $('#yearFrom').change(function () {
+                    var yearStart=$(this).val();
+                    if(yearStart == ""){
+                         $('#yearTo').attr("disabled","disabled");
+                    }
+                    else{
+                         $('#yearTo').removeAttr("disabled");
+                         var maxYear=$("#maxyear").val();
+                         document.getElementById('yearTo').options.length=0;
+                         for(var i=yearStart;i<=maxYear;i++){
+                             addOption(document.getElementById('yearTo'),i,i);
+                         }
+                    }
+                });
+
+                $(".xdate").datepicker({showButtonPanel: true,numberOfMonths: 1,dateFormat:"yy-mm-dd"});
+
+                var checkDates = function(element){
+                    var container = element.closest("li");
+                    var todate = $.datepicker.formatDate('@', container.find(".todate").datepicker('getDate'));
+
+                    var fromdate = $.datepicker.formatDate('@', container.find(".fromdate").datepicker('getDate'));
+
+                    if ((todate != '') && (fromdate != '') && (todate < fromdate)) {
+                       if (container.find(".dateseqerror").size() == 0)
+                          container.append("<div class=\"error dateseqerror\">End date must be later than start date</div>");
+
+                       container.find(".dateseqerror").focus();
+                       return false;
+                    }
+                    else
+                       return true;
+                 }
+
+                 $("#submitsearch").click(function() {
+                     var doSave = true;
+                     $(".todate").each(function(){
+                        if(!checkDates($(this)))
+                           doSave = false;
+                     });
+                     return doSave;
+                 });
+
+            });
+    /* ]]> */
+</script>
+

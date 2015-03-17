@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>search</artifactId>
+        <groupId>com.pub2web.product</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>module-search-types</artifactId>
+
+    <properties>
+        <main.basedir>${basedir}/..</main.basedir>
+    </properties>
+
+    <!-- Core Pub2WEB dependencies -->
+
+    <dependencies>
+    <dependency>
+        <groupId>rdf-connector-api</groupId>
+        <artifactId>rdf-connector-api</artifactId>
+        <version>4.0.3</version>
+        <scope>system</scope>
+        <systemPath>${main.basedir}/lib/rdf-connector-api-4.0.3.jar</systemPath>
+    </dependency>
+        <dependency>
+            <groupId>application-utils</groupId>
+            <artifactId>application-utils</artifactId>
+            <version>4.0.1</version>
+            <scope>system</scope>
+            <systemPath>${main.basedir}/lib/application-utils-4.0.1.jar</systemPath>
+        </dependency>
+    </dependencies>
+
+</project>
